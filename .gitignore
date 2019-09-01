@@ -1,0 +1,10 @@
+*.swp
+CMakeCache.txt
+CMakeFiles
+CTestTestfile.cmake
+Makefile
+bin
+cmake_install.cmake
+googletest-*
+lib
+Testing
