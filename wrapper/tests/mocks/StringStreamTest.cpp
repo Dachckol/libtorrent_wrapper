@@ -7,30 +7,28 @@ namespace {
   class StringStreamTest : public ::testing::Test {
 
     public:
-      StringStreamTest() {
+      StringStreamTest() : mock_content("This is a test"){
+        stream = new StringStream();
       }
       ~StringStreamTest() {
+        delete stream;
       }
+
+      // Using raw pointers here as the class is tiny and only used in this file.
+      StringStream * stream;
+      std::string mock_content;
 
 
   };
 
   TEST_F(StringStreamTest, WriteWritesLine) {
-    StringStream stream;
-    std::string content = "This is a test";
-
-    stream.write(content);
-
-    ASSERT_STREQ(content.c_str() ,stream.string_stream.str().c_str());
+    stream->write(mock_content);
+    ASSERT_STREQ(mock_content.c_str(), stream->string_stream.str().c_str());
   }
 
   TEST_F(StringStreamTest, ReadReadsLine) {
-    StringStream stream;
-    std::string content = "This is a test";
-
-    stream.write(content);
-
-    ASSERT_STREQ(content.c_str(), stream.read().c_str());
+    stream->write(mock_content);
+    ASSERT_STREQ(mock_content.c_str(), stream->read().c_str());
   }
 
 }  // namespace
