@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <sstream>
 #include <vector>
 #include <memory>
 
@@ -11,11 +12,12 @@ class QueueManager {
   public:
     QueueManager(Stream & queue_stream);
 
-    void add(Download & download);
-    void remove(std::string & name);
-    std::shared_ptr<Download> pop();
+    void add(const Download & download);
+    void remove(const std::string & name);
+    std::unique_ptr<Download> pop();
 
   private:
-    std::vector<std::shared_ptr<Download>> read();
     Stream & stream;
+
+    std::unique_ptr<Download> to_download(std::string & entry);
 };

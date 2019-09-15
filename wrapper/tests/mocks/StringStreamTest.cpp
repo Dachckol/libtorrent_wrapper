@@ -31,4 +31,10 @@ namespace {
     ASSERT_STREQ(mock_content.c_str(), stream->read().c_str());
   }
 
+  TEST_F(StringStreamTest, EOFSetCorrectly) {
+    ASSERT_TRUE(stream->is_eof());
+    stream->write(mock_content);
+    ASSERT_FALSE(stream->is_eof());
+  }
+
 }  // namespace
