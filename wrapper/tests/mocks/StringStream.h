@@ -30,6 +30,11 @@ class StringStream : public Stream {
       string_stream.str(std::string());
     }
 
+    void un_eof() override {
+      string_stream.clear();
+      string_stream.seekg(0, std::ios::beg);
+    }
+
   private:
     bool empty;
 };

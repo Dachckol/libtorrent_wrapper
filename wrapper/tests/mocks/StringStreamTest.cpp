@@ -37,4 +37,15 @@ namespace {
     ASSERT_FALSE(stream->is_eof());
   }
 
+  TEST_F(StringStreamTest, UnEOFResetsStream) {
+    ASSERT_TRUE(stream->is_eof());
+    stream->write(mock_content);
+    stream->read();
+    ASSERT_TRUE(stream->is_eof());
+
+    stream->un_eof();
+    ASSERT_FALSE(stream->is_eof());
+    ASSERT_STREQ(mock_content.c_str(), stream->read().c_str());
+  }
+
 }  // namespace

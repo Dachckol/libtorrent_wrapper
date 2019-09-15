@@ -24,6 +24,7 @@ class FileStream : public Stream {
     std::string read() override;
     bool is_eof() override;
     void clear() override;
+    void un_eof() override;
     ~FileStream();
   private:
     std::fstream file_stream;

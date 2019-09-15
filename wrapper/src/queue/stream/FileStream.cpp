@@ -28,6 +28,11 @@ bool FileStream::is_eof() {
   return file_stream.eof();
 }
 
+void FileStream::un_eof() {
+  file_stream.clear();
+  file_stream.seekg(0, std::fstream::beg);
+}
+
 void FileStream::clear() {
   //risky business, need to reopen the stream with trunc
   try {

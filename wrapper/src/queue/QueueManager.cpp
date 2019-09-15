@@ -15,9 +15,16 @@ void QueueManager::add(const Download & download) {
 void QueueManager::remove(const std::string & name) {
   std::stringstream filtered_entries;
 
+  bool first = true;
   while(!stream.is_eof()) {
     std::string line = stream.read();
-    if (!line.find(name)) filtered_entries << line << std::endl;
+    if (line.find(name) == std::string::npos)
+    {
+      if (first){
+        first = false;
+      } else filtered_entries << std::endl;
+      filtered_entries << line;
+    }
   }
 
   try {
@@ -27,6 +34,7 @@ void QueueManager::remove(const std::string & name) {
   }
 
   stream.write(filtered_entries.str());
+  stream.un_eof();
 }
 
 std::unique_ptr<Download> QueueManager::pop() {

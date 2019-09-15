@@ -8,4 +8,5 @@ class Stream {
     virtual std::string read() = 0;
     virtual bool is_eof() = 0;
     virtual void clear() = 0;
+    virtual void un_eof() = 0;
 };

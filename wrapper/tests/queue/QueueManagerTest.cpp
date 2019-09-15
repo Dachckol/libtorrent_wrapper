@@ -56,7 +56,7 @@ namespace {
 
     while(!stream->is_eof()) {
       std::string line = stream->read();
-      ASSERT_FALSE(line.find(mock_download1.name));
+      ASSERT_TRUE(line.find(mock_download1.name) == std::string::npos);
     }
   }
 
@@ -71,7 +71,7 @@ namespace {
 
     while(!stream->is_eof()) {
       std::string line = stream->read();
-      ASSERT_FALSE(line.find(mock_download1.name));
+      ASSERT_TRUE(line.find(mock_download1.name) == std::string::npos);
     }
   }
 }  // namespace
