@@ -69,6 +69,7 @@ target_sources(torrent_start
   PUBLIC
   ${PROJECT_SOURCE_DIR}/wrapper/src/queue/QueueManager.cpp
   ${PROJECT_SOURCE_DIR}/wrapper/src/queue/stream/FileStream.cpp
+  ${PROJECT_SOURCE_DIR}/wrapper/src/torrent/Torrenter.cpp
 )
 target_link_libraries(torrent_start torrent-rasterbar)
 
@@ -78,6 +79,7 @@ target_sources(torrent_add
   PUBLIC
   ${PROJECT_SOURCE_DIR}/wrapper/src/queue/QueueManager.cpp
   ${PROJECT_SOURCE_DIR}/wrapper/src/queue/stream/FileStream.cpp
+  ${PROJECT_SOURCE_DIR}/wrapper/src/torrent/Torrenter.cpp
 )
 
 add_executable(torrent_rm ${PROJECT_SOURCE_DIR}/wrapper/src/targets/torrent_rm.cpp)
@@ -85,6 +87,7 @@ target_sources(torrent_rm
   PUBLIC
   ${PROJECT_SOURCE_DIR}/wrapper/src/queue/QueueManager.cpp
   ${PROJECT_SOURCE_DIR}/wrapper/src/queue/stream/FileStream.cpp
+  ${PROJECT_SOURCE_DIR}/wrapper/src/torrent/Torrenter.cpp
 )
 
 enable_testing()
@@ -97,6 +100,7 @@ target_include_directories(app_test
 target_sources(app_test
   PUBLIC
   ${PROJECT_SOURCE_DIR}/wrapper/src/queue/QueueManager.cpp
+  ${PROJECT_SOURCE_DIR}/wrapper/src/torrent/Torrenter.cpp
   ${PROJECT_SOURCE_DIR}/wrapper/tests/mocks/StringStreamTest.cpp
   ${PROJECT_SOURCE_DIR}/wrapper/tests/queue/QueueManagerTest.cpp
 )

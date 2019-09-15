@@ -1,9 +1,13 @@
 #include <iostream>
 #include <string>
+#include "queue/QueueManager.h"
+#include "queue/stream/FileStream.h"
+#include "torrent/Torrenter.h"
 
 int main(int argc, char ** argv) {
   if (argc != 3) {
     std::cerr << "ERROR: Invalid number of options provided" << std::endl;
+    std::cerr << "arguments: [file] [output directory]" << std::endl;
     return 0;
   }
 
@@ -13,5 +17,13 @@ int main(int argc, char ** argv) {
   std::cout << "Starting torrent client..." << std::endl;
   std::cout << "    * Reading files from : "<< magnet_file << std::endl;
   std::cout << "    * Output to          : "<< output_dir << std::endl;
+
+
+  try {
+    FileStream stream(magnet_file);
+    Torrenter(QueueManager(stream), output_dir).start();
+  } catch (std::exception e) {
+    std::cerr << e.what() << std::endl;
+  }
   return 0;
 }
