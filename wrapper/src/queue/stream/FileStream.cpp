@@ -9,7 +9,7 @@ FileStream::FileStream(
 void FileStream::open() {
   file_stream.open(
       file,
-      std::fstream::in | std::fstream::out
+      std::fstream::in | std::fstream::out | std::fstream::app
       );
   if (!file_stream.is_open()) throw FileOpenException();
 }
