@@ -64,27 +64,41 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/libtorrent-src/include EXCLUDE_F
 include_directories(${PROJECT_SOURCE_DIR}/wrapper/include/)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
-add_executable(torrent_start ${PROJECT_SOURCE_DIR}/wrapper/src/torrent_start.cpp)
+add_executable(torrent_start ${PROJECT_SOURCE_DIR}/wrapper/src/targets/torrent_start.cpp)
 target_sources(torrent_start
   PUBLIC
+  ${PROJECT_SOURCE_DIR}/wrapper/src/queue/QueueManager.cpp
+  ${PROJECT_SOURCE_DIR}/wrapper/src/queue/stream/FileStream.cpp
 )
 target_link_libraries(torrent_start torrent-rasterbar)
 
 
-add_executable(torrent_add ${PROJECT_SOURCE_DIR}/wrapper/src/torrent_add.cpp)
+add_executable(torrent_add ${PROJECT_SOURCE_DIR}/wrapper/src/targets/torrent_add.cpp)
 target_sources(torrent_add
   PUBLIC
+  ${PROJECT_SOURCE_DIR}/wrapper/src/queue/QueueManager.cpp
+  ${PROJECT_SOURCE_DIR}/wrapper/src/queue/stream/FileStream.cpp
 )
 
-add_executable(torrent_rm ${PROJECT_SOURCE_DIR}/wrapper/src/torrent_rm.cpp)
+add_executable(torrent_rm ${PROJECT_SOURCE_DIR}/wrapper/src/targets/torrent_rm.cpp)
 target_sources(torrent_rm
   PUBLIC
+  ${PROJECT_SOURCE_DIR}/wrapper/src/queue/QueueManager.cpp
+  ${PROJECT_SOURCE_DIR}/wrapper/src/queue/stream/FileStream.cpp
 )
 
 enable_testing()
 add_executable(app_test ${PROJECT_SOURCE_DIR}/wrapper/tests/main.cpp)
+target_include_directories(app_test
+  PUBLIC
+  ${PROJECT_SOURCE_DIR}/wrapper/tests/mocks/
+  ${PROJECT_SOURCE_DIR}/wrapper/include/
+)
 target_sources(app_test
   PUBLIC
+  ${PROJECT_SOURCE_DIR}/wrapper/src/queue/QueueManager.cpp
+  ${PROJECT_SOURCE_DIR}/wrapper/tests/mocks/StringStreamTest.cpp
+  ${PROJECT_SOURCE_DIR}/wrapper/tests/queue/QueueManagerTest.cpp
 )
 target_link_libraries(app_test gtest_main)
 target_link_libraries(app_test gmock_main)
