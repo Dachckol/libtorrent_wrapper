@@ -61,5 +61,6 @@ std::unique_ptr<Download> QueueManager::to_download(std::string & entry) {
 }
 
 bool QueueManager::is_eof(){
+  stream.reload();
   return stream.is_eof();
 }

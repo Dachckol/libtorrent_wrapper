@@ -30,8 +30,6 @@ bool FileStream::is_eof() {
   if (!has_read) {
     try {
       std::string line = read();
-      open_clear();
-      write(line);
       un_eof();
       return false;
     } catch (const StreamAtEOF & e) {
@@ -57,6 +55,18 @@ void FileStream::clear() {
     }
   }
   open_clear();
+}
+
+void FileStream::reload() {
+  try {
+    file_stream.close();
+  } catch(std::ios_base::failure e) {
+    if (file_stream.is_open()) {
+      std::cerr << "Failed to close filestream";
+      throw FileCloseException();
+    }
+  }
+  open();
 }
 
 void FileStream::open_clear() {

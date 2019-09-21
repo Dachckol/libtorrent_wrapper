@@ -35,6 +35,10 @@ class StringStream : public Stream {
       string_stream.seekg(0, std::ios::beg);
     }
 
+    void reload() override {
+      un_eof();
+    }
+
   private:
     bool empty;
 };

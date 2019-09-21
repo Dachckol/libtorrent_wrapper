@@ -37,7 +37,7 @@ add_subdirectory(
 #----------------------
 # Download and unpack libtorrent at configure time
 configure_file(libtorrent.in libtorrent-download/CMakeLists.txt)
-execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" -DCMAKE_BUILD_TYPE=Debug .
+execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
   RESULT_VARIABLE result
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/libtorrent-download )
 if(result)

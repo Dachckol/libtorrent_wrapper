@@ -25,6 +25,7 @@ class FileStream : public Stream {
     bool is_eof() override;
     void clear() override;
     void un_eof() override;
+    void reload() override;
     ~FileStream();
   private:
     std::fstream file_stream;
