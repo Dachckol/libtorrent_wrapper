@@ -2,6 +2,12 @@
 
 #include <iostream>
 
+class StreamAtEOF: public std::exception{
+  virtual const char* what() const throw() {
+    return "Stream is empty";
+  }
+};
+
 class Stream {
   public:
     virtual void write(const std::string & content) = 0;

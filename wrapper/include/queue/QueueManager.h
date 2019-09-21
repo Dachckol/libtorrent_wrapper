@@ -15,6 +15,7 @@ class QueueManager {
     void add(const Download & download);
     void remove(const std::string & name);
     std::unique_ptr<Download> pop();
+    bool is_eof();
 
   private:
     Stream & stream;

@@ -38,6 +38,9 @@ void QueueManager::remove(const std::string & name) {
 }
 
 std::unique_ptr<Download> QueueManager::pop() {
+  if (is_eof()){
+    throw StreamAtEOF();
+  }
   std::string top_entry = stream.read();
 
   auto download = to_download(top_entry);
@@ -55,4 +58,8 @@ std::unique_ptr<Download> QueueManager::to_download(std::string & entry) {
   getline(entry_stream, download.get()->magnet_url);
 
   return download;
+}
+
+bool QueueManager::is_eof(){
+  return stream.is_eof();
 }

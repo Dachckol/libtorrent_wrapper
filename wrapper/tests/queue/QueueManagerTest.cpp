@@ -74,4 +74,18 @@ namespace {
       ASSERT_TRUE(line.find(mock_download1.name) == std::string::npos);
     }
   }
+
+  TEST_F(QueueManagerTest, IsEOFWorks) {
+    ASSERT_TRUE(stream->is_eof());
+    ASSERT_TRUE(queue->is_eof());
+
+    stream->write("This is a test");
+
+    ASSERT_FALSE(stream->is_eof());
+    ASSERT_FALSE(queue->is_eof());
+  }
+
+  TEST_F(QueueManagerTest, EOFPopThrows) {
+    ASSERT_THROW(queue->pop(), StreamAtEOF);
+  }
 }  // namespace
