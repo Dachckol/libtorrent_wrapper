@@ -37,7 +37,7 @@ add_subdirectory(
 #----------------------
 # Download and unpack libtorrent at configure time
 configure_file(libtorrent.in libtorrent-download/CMakeLists.txt)
-execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
+execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" -DCMAKE_BUILD_TYPE=Debug .
   RESULT_VARIABLE result
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/libtorrent-download )
 if(result)
@@ -79,7 +79,6 @@ target_sources(torrent_add
   PUBLIC
   ${PROJECT_SOURCE_DIR}/wrapper/src/queue/QueueManager.cpp
   ${PROJECT_SOURCE_DIR}/wrapper/src/queue/stream/FileStream.cpp
-  ${PROJECT_SOURCE_DIR}/wrapper/src/torrent/Torrenter.cpp
 )
 
 add_executable(torrent_rm ${PROJECT_SOURCE_DIR}/wrapper/src/targets/torrent_rm.cpp)
@@ -87,7 +86,6 @@ target_sources(torrent_rm
   PUBLIC
   ${PROJECT_SOURCE_DIR}/wrapper/src/queue/QueueManager.cpp
   ${PROJECT_SOURCE_DIR}/wrapper/src/queue/stream/FileStream.cpp
-  ${PROJECT_SOURCE_DIR}/wrapper/src/torrent/Torrenter.cpp
 )
 
 enable_testing()
@@ -100,7 +98,6 @@ target_include_directories(app_test
 target_sources(app_test
   PUBLIC
   ${PROJECT_SOURCE_DIR}/wrapper/src/queue/QueueManager.cpp
-  ${PROJECT_SOURCE_DIR}/wrapper/src/torrent/Torrenter.cpp
   ${PROJECT_SOURCE_DIR}/wrapper/tests/mocks/StringStreamTest.cpp
   ${PROJECT_SOURCE_DIR}/wrapper/tests/queue/QueueManagerTest.cpp
 )

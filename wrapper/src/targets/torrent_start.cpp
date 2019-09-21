@@ -21,7 +21,8 @@ int main(int argc, char ** argv) {
 
   try {
     FileStream stream(magnet_file);
-    Torrenter(QueueManager(stream), output_dir).start();
+    QueueManager queue_manager(stream);
+    Torrenter(queue_manager, output_dir).start_downloading();
   } catch (std::exception e) {
     std::cerr << e.what() << std::endl;
   }
