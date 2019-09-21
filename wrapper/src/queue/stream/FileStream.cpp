@@ -22,7 +22,7 @@ FileStream::~FileStream() {
 }
 
 void FileStream::write(
-    const std::string & content) {
+    const std::string content) {
   file_stream << content;
 }
 

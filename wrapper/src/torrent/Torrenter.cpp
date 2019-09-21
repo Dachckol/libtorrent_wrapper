@@ -2,7 +2,7 @@
 
 Torrenter::Torrenter(
     QueueManager & queue_manager,
-    std::string & output_directory
+    const std::string & output_directory
   ):
   queue(queue_manager),
   output_dir(output_directory),
@@ -42,15 +42,21 @@ lt::add_torrent_params Torrenter::get_next() {
     std::cout << "Queue is empty - waiting 1m" << std::endl;
     pause_thread(60);
   }
-  std::unique_ptr<Download> download = queue.pop();
-  std::cout << "  - "<< download.get()->magnet_url << std::endl;
-  auto params = lt::add_torrent_params(
-      lt::parse_magnet_uri(download.get()->magnet_url)
-      );
 
-  std::string output = output_dir + download.get()->name;
-  std::cout << "  - "<< output << std::endl;
-  params.save_path = output;
+  std::string magnet_url, output_path;
+  {
+    Download download = queue.pop();
+    magnet_url = std::move(download.magnet_url);
+    output_path = output_dir + std::move(download.name);
+  }
+
+  std::cout << "  - "<< magnet_url << std::endl;
+  std::cout << "  - "<< output_path << std::endl;
+
+  auto params = lt::add_torrent_params(
+      lt::parse_magnet_uri(std::move(magnet_url))
+      );
+  params.save_path = std::move(output_path);
 
   return params;
 }

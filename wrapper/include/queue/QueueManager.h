@@ -3,7 +3,6 @@
 #include <string>
 #include <sstream>
 #include <vector>
-#include <memory>
 
 #include "Download.h"
 #include "queue/stream/Stream.h"
@@ -14,11 +13,11 @@ class QueueManager {
 
     void add(const Download & download);
     void remove(const std::string & name);
-    std::unique_ptr<Download> pop();
+    Download pop();
     bool is_eof();
 
   private:
     Stream & stream;
 
-    std::unique_ptr<Download> to_download(std::string & entry);
+    static Download to_download(const std::string entry);
 };

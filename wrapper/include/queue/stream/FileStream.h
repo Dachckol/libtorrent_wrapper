@@ -20,7 +20,7 @@ class FileCloseException: public std::exception{
 class FileStream : public Stream {
   public:
     FileStream(const std::string & file_name);
-    void write(const std::string & content) override;
+    void write(const std::string content) override;
     std::string read() override;
     bool is_eof() override;
     void clear() override;

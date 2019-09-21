@@ -11,7 +11,7 @@ class StringStream : public Stream {
 
     StringStream() : string_stream(), empty(true) {};
 
-    void write(const std::string & content) override {
+    void write(const std::string content) override {
       empty=false;
       this->string_stream << content;
     };

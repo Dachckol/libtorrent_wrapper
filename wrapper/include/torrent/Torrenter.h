@@ -15,11 +15,11 @@
 typedef lt::alert const* TorrentAlertPtr;
 class Torrenter {
   public:
-    Torrenter(QueueManager & queue_manager, std::string & output_directory);
+    Torrenter(QueueManager & queue_manager, const std::string & output_directory);
     void start_downloading();
   private:
     QueueManager & queue;
-    std::string & output_dir;
+    const std::string & output_dir;
     lt::session torrent_session;
     lt::torrent_handle current_handle;
     lt::settings_pack session_settings;

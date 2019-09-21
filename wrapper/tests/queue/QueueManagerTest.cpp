@@ -66,8 +66,8 @@ namespace {
 
     auto download = queue->pop();
 
-    ASSERT_STREQ(mock_download1.name.c_str(), download.get()->name.c_str());
-    ASSERT_STREQ(mock_download1.magnet_url.c_str(), download.get()->magnet_url.c_str());
+    ASSERT_STREQ(mock_download1.name.c_str(), download.name.c_str());
+    ASSERT_STREQ(mock_download1.magnet_url.c_str(), download.magnet_url.c_str());
 
     while(!stream->is_eof()) {
       std::string line = stream->read();

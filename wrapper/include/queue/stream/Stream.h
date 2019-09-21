@@ -10,7 +10,7 @@ class StreamAtEOF: public std::exception{
 
 class Stream {
   public:
-    virtual void write(const std::string & content) = 0;
+    virtual void write(const std::string content) = 0;
     virtual std::string read() = 0;
     virtual void reload() = 0;
     virtual bool is_eof() = 0;
