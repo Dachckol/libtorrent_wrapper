@@ -31,4 +31,5 @@ class FileStream : public Stream {
     const std::string & file;
     void open();
     void open_clear();
+    bool has_read;
 };

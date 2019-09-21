@@ -2,7 +2,9 @@
 
 
 FileStream::FileStream(
-    const std::string & file_name) : file(file_name){
+    const std::string & file_name)
+  : file(file_name),
+    has_read(false) {
   open();
 }
 
@@ -25,6 +27,17 @@ void FileStream::write(
 }
 
 bool FileStream::is_eof() {
+  if (!has_read) {
+    try {
+      std::string line = read();
+      open_clear();
+      write(line);
+      un_eof();
+      return false;
+    } catch (const StreamAtEOF & e) {
+      return true;
+    }
+  }
   return file_stream.eof();
 }
 
@@ -56,6 +69,6 @@ void FileStream::open_clear() {
 
 std::string FileStream::read() {
   std::string content;
-  getline(file_stream,content);
+  if(!getline(file_stream,content)) throw StreamAtEOF();
   return content;
 }

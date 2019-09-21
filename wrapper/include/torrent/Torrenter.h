@@ -1,6 +1,8 @@
 #pragma once
 
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 #include <libtorrent/session.hpp>
 #include <libtorrent/add_torrent_params.hpp>
@@ -31,4 +33,5 @@ class Torrenter {
     static void log_alert(TorrentAlertPtr a);
     static bool is_finished_alert(TorrentAlertPtr a);
     static bool is_failed_alert(TorrentAlertPtr a);
+    static void pause_thread(int seconds);
 };

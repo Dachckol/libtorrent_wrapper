@@ -18,8 +18,7 @@ void Torrenter::configure_session() {
   settings.set_int(lt::settings_pack::alert_mask,
       lt::alert::error_notification |
       lt::alert::status_notification |
-      lt::alert::file_progress_notification |
-      lt::alert::performance_warning
+      lt::alert::file_progress_notification
   );
 
   torrent_session.apply_settings(settings);
@@ -39,28 +38,38 @@ void Torrenter::start_next_torrent(){
 
 lt::add_torrent_params Torrenter::get_next() {
   std::cout << "Reading queue for next torrent: " << std::endl;
+  while (queue.is_eof()){
+    std::cout << "Queue is empty - waiting 1m" << std::endl;
+    pause_thread(60);
+  }
   std::unique_ptr<Download> download = queue.pop();
   std::cout << "  - "<< download.get()->magnet_url << std::endl;
   auto params = lt::add_torrent_params(
       lt::parse_magnet_uri(download.get()->magnet_url)
       );
 
-  std::string output = output_dir.append(download.get()->name);
+  std::string output = output_dir + download.get()->name;
   std::cout << "  - "<< output << std::endl;
   params.save_path = output;
 
   return params;
 }
 
+void Torrenter::pause_thread(int seconds){
+  std::this_thread::sleep_for(std::chrono::seconds(seconds));
+}
+
 bool Torrenter::handle_status_events_ok() {
   for (TorrentAlertPtr alert : get_alerts() ){
     log_alert(alert);
     if ( is_finished_alert(alert) ){
+      torrent_session.remove_torrent(current_handle);
       start_next_torrent();
       break;
     } else if ( is_failed_alert(alert) ){
       return false;
     }
+    pause_thread(2);
   }
 
   return true;
@@ -83,4 +92,3 @@ bool Torrenter::is_finished_alert(TorrentAlertPtr a) {
 bool Torrenter::is_failed_alert(TorrentAlertPtr a) {
   return lt::alert_cast<lt::torrent_error_alert>(a);
 }
-
