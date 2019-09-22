@@ -1,44 +1,37 @@
 #include "torrent/Torrenter.h"
 
-Torrenter::Torrenter(
-    QueueManager & queue_manager,
-    const std::string & output_directory
-  ):
-  queue(queue_manager),
-  output_dir(output_directory),
-  torrent_session()
-{
+Torrenter::Torrenter(QueueManager& queue_manager,
+                     const std::string& output_directory)
+    : queue(queue_manager), output_dir(output_directory), torrent_session() {
   configure_session();
 }
-
 
 void Torrenter::configure_session() {
   std::cout << "Configuring session settings" << std::endl;
   lt::settings_pack settings;
   settings.set_int(lt::settings_pack::alert_mask,
-      lt::alert::error_notification |
-      lt::alert::status_notification |
-      lt::alert::file_progress_notification
-  );
+                   lt::alert::error_notification |
+                       lt::alert::status_notification |
+                       lt::alert::file_progress_notification);
 
   torrent_session.apply_settings(settings);
   std::cout << "Settings applied" << std::endl;
 }
 
-
 void Torrenter::start_downloading() {
   std::cout << "Starting downloading" << std::endl;
   start_next_torrent();
-  while (handle_status_events_ok());
+  while (handle_status_events_ok())
+    ;
 }
 
-void Torrenter::start_next_torrent(){
+void Torrenter::start_next_torrent() {
   current_handle = torrent_session.add_torrent(std::move(get_next()));
 }
 
 lt::add_torrent_params Torrenter::get_next() {
   std::cout << "Reading queue for next torrent: " << std::endl;
-  while (queue.is_eof()){
+  while (queue.is_eof()) {
     std::cout << "Queue is empty - waiting 1m" << std::endl;
     pause_thread(60);
   }
@@ -50,29 +43,28 @@ lt::add_torrent_params Torrenter::get_next() {
     output_path = output_dir + std::move(download.name);
   }
 
-  std::cout << "  - "<< magnet_url << std::endl;
-  std::cout << "  - "<< output_path << std::endl;
+  std::cout << "  - " << magnet_url << std::endl;
+  std::cout << "  - " << output_path << std::endl;
 
-  auto params = lt::add_torrent_params(
-      lt::parse_magnet_uri(std::move(magnet_url))
-      );
+  auto params =
+      lt::add_torrent_params(lt::parse_magnet_uri(std::move(magnet_url)));
   params.save_path = std::move(output_path);
 
   return params;
 }
 
-void Torrenter::pause_thread(int seconds){
+void Torrenter::pause_thread(int seconds) {
   std::this_thread::sleep_for(std::chrono::seconds(seconds));
 }
 
 bool Torrenter::handle_status_events_ok() {
-  for (TorrentAlertPtr alert : get_alerts() ){
+  for (TorrentAlertPtr alert : get_alerts()) {
     log_alert(alert);
-    if ( is_finished_alert(alert) ){
+    if (is_finished_alert(alert)) {
       torrent_session.remove_torrent(current_handle);
       start_next_torrent();
       break;
-    } else if ( is_failed_alert(alert) ){
+    } else if (is_failed_alert(alert)) {
       return false;
     }
     pause_thread(2);
